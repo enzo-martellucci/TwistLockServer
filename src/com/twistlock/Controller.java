@@ -25,7 +25,7 @@ public class Controller
 			switch (action)
 			{
 				case 'S' -> this.viewCUI.showGame();
-				case 'P' -> this.viewCUI.notImplemented();
+				case 'P' -> this.play();
 			}
 		}
 
@@ -34,6 +34,17 @@ public class Controller
 
 
 	// Methods
+	public void play()
+	{
+		String[] position = this.viewCUI.play();
+
+		int line   = Integer.parseInt(position[0]) - 1;
+		int col    = position[1].charAt(0) - 'A';
+		int corner = Integer.parseInt(position[2]);
+
+		this.game.play(line, col, corner);
+		this.viewCUI.showGame();
+	}
 
 
 	// Main

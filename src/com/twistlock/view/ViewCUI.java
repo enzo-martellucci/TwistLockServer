@@ -50,14 +50,14 @@ public class ViewCUI
 		System.out.println("[P] Play");
 		System.out.println("[Q] Quit");
 
-		System.out.print("Your choice : ");
-		return Character.toUpperCase(this.input.next().charAt(0));
+		Docker current = this.game.getLstDocker()[this.game.getDocker()];
+		System.out.printf("Your choice (%s%s%s) : ", MAP_FG.get(current.getColor()), current.getName(), RESET);
+		return Character.toUpperCase(this.input.nextLine().charAt(0));
 	}
 
 	public void showGame()
 	{
 		StringBuilder sbGame = new StringBuilder();
-
 
 		// Adding the grid (corner and value)
 		int[][]  gridValue  = this.game.getGridValue();
@@ -109,6 +109,12 @@ public class ViewCUI
 		}
 
 		System.out.println(sbGame.toString());
+	}
+
+	public String[] play()
+	{
+		System.out.print("Play (Line Column Corner) : ");
+		return this.input.nextLine().split(" ");
 	}
 
 	public void notImplemented()

@@ -39,4 +39,11 @@ public class Docker
 	{
 		return this.nbLock;
 	}
+
+
+	// Methods
+	public void removeLock(int n)
+	{
+		this.nbLock -= n;
+	}
 }
