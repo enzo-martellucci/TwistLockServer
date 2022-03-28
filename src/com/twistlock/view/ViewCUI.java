@@ -43,18 +43,6 @@ public class ViewCUI
 
 
 	// Methods
-	public char enterAction()
-	{
-		System.out.println("What to do :");
-		System.out.println("[S] Show the game");
-		System.out.println("[P] Play");
-		System.out.println("[Q] Quit");
-
-		Docker current = this.game.getLstDocker()[this.game.getDocker()];
-		System.out.printf("Your choice (%s%s%s) : ", MAP_FG.get(current.getColor()), current.getName(), RESET);
-		return Character.toUpperCase(this.input.nextLine().charAt(0));
-	}
-
 	public void showGame()
 	{
 		StringBuilder sbGame = new StringBuilder();
@@ -85,8 +73,7 @@ public class ViewCUI
 		}
 
 		sbCorner = new StringBuilder();
-		sbCorner.append(gridCorner[gridCorner.length - 1][0]);
-
+		sbCorner.append(String.format("%s%c%s", MAP_FG.get(gridCorner[gridCorner.length - 1][0]), gridCorner[gridCorner.length - 1][0], RESET));
 		for (int l = gridCorner.length - 1, c = 1; c < gridCorner[l].length; c++)
 		     sbCorner.append(String.format("--%s%c%s", MAP_FG.get(gridCorner[l][c]), gridCorner[l][c], RESET));
 
@@ -113,17 +100,8 @@ public class ViewCUI
 
 	public String[] play()
 	{
-		System.out.print("Play (Line Column Corner) : ");
-		return this.input.nextLine().split(" ");
-	}
-
-	public void notImplemented()
-	{
-		System.out.println("Not implemented yet!");
-	}
-
-	public void quit()
-	{
-		System.out.println("Good bye!");
+		Docker current = this.game.getLstDocker()[this.game.getDocker()];
+		System.out.printf("%s%s%s place lock (Line Column Corner) : ", MAP_FG.get(current.getColor()), current.getName(), RESET);
+		return this.input.nextLine().split("\s+");
 	}
 }

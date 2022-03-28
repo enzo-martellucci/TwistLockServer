@@ -4,7 +4,7 @@ public class Docker
 {
 	// Constants
 	private static final int START_SCORE = 0;
-	private static final int START_LOCK  = 20;
+	private static final int START_LOCK  = 4;
 
 
 	//Attributs
@@ -14,7 +14,7 @@ public class Docker
 	private int    nbLock;
 
 	// Constructeur
-	public Docker(char color, String name)
+	public Docker(String name, char color)
 	{
 		this.name   = name;
 		this.color  = color;
@@ -45,5 +45,7 @@ public class Docker
 	public void removeLock(int n)
 	{
 		this.nbLock -= n;
+		if (this.nbLock < 0)
+			this.nbLock = 0;
 	}
 }

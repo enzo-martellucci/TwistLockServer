@@ -27,7 +27,7 @@ public class Game
 		// Dockers initialisation
 		this.lstDocker = new Docker[lstName.length];
 		for (int i = 0; i < this.lstDocker.length; i++)
-		     this.lstDocker[i] = new Docker(LST_COLOR[i], lstName[i]);
+		     this.lstDocker[i] = new Docker(lstName[i], LST_COLOR[i]);
 
 		// Grids initialisation
 		Random random = new Random();
@@ -45,7 +45,7 @@ public class Game
 		for (int l = 0; l < this.gridCorner.length; l++)
 		     Arrays.fill(this.gridCorner[l], NEUTRAL);
 
-		this.gameOver = true;
+		this.gameOver = false;
 	}
 
 
@@ -57,40 +57,30 @@ public class Game
 	public char[][] getGridColor()  { return this.gridColor; }
 	public char[][] getGridCorner() { return this.gridCorner; }
 
+	public boolean isGameOver()     { return this.gameOver; }
+
 
 	// Methods
 	public void play(int l, int c, int corner)
 	{
-		int lCorn = l;
-		int cCorn = c;
-
-		if (corner == 2)
-			cCorn++;
-		else if (corner == 4)
-			lCorn++;
-		else if (corner == 3)
-		{
-			lCorn++;
-			cCorn++;
-		}
+		int lCorn = l + (corner == 4 || corner == 3 ? 1 : 0);
+		int cCorn = c + (corner == 2 || corner == 3 ? 1 : 0);
 
 		if (l < 0 || l > this.gridValue.length - 1 || c < 0 || c > this.gridValue[0].length - 1 || corner < 1 || corner > 4 || this.gridCorner[lCorn][cCorn] != NEUTRAL)
-		{
 			this.lstDocker[this.docker].removeLock(2);
-			this.nextDocker();
-			return;
+		else
+		{
+			this.lstDocker[this.docker].removeLock(1);
+			this.placeCorner(lCorn, cCorn);
 		}
 
-		this.lstDocker[this.docker].removeLock(1);
-		this.placeCorner(lCorn, cCorn);
 		this.nextDocker();
 	}
 
 	private void placeCorner(int lCorn, int cCorn)
 	{
-		int  cpt;
-		char color    = ' ';
-		int  maxValue = 0;
+		int  cpt, maxValue;
+		char color = NEUTRAL;
 
 		this.gridCorner[lCorn][cCorn] = this.lstDocker[this.docker].getColor();
 
@@ -103,20 +93,20 @@ public class Game
 			for (int c = cMin; c < cMax; c++)
 			{
 				maxValue = 0;
-				for (int d = 0; d < this.lstDocker.length; d++)
+				for (int i = 0; i < this.lstDocker.length; i++)
 				{
 					cpt = 0;
-					if (this.gridCorner[l][c] == this.lstDocker[d].getColor()) cpt++;
-					if (this.gridCorner[l][c + 1] == this.lstDocker[d].getColor()) cpt++;
-					if (this.gridCorner[l + 1][c] == this.lstDocker[d].getColor()) cpt++;
-					if (this.gridCorner[l + 1][c + 1] == this.lstDocker[d].getColor()) cpt++;
+					if (this.gridCorner[l][c] == this.lstDocker[i].getColor()) cpt++;
+					if (this.gridCorner[l][c + 1] == this.lstDocker[i].getColor()) cpt++;
+					if (this.gridCorner[l + 1][c] == this.lstDocker[i].getColor()) cpt++;
+					if (this.gridCorner[l + 1][c + 1] == this.lstDocker[i].getColor()) cpt++;
 
 					if (cpt == maxValue)
 						color = NEUTRAL;
 					else if (cpt > maxValue)
 					{
 						maxValue = cpt;
-						color    = this.lstDocker[d].getColor();
+						color    = this.lstDocker[i].getColor();
 					}
 				}
 				this.gridColor[l][c] = color;
@@ -139,13 +129,13 @@ public class Game
 
 	private void majGameOver()
 	{
-		boolean padlockLeft = false;
-		boolean cornerFree  = false;
+		boolean lockLeft   = false;
+		boolean cornerFree = false;
 
 		for (int i = 0; i < this.lstDocker.length; i++)
 			if (this.lstDocker[i].getNbLock() > 0)
 			{
-				padlockLeft = true;
+				lockLeft = true;
 				break;
 			}
 
@@ -159,6 +149,6 @@ public class Game
 					break exit;
 				}
 
-		this.gameOver = !cornerFree || !padlockLeft;
+		this.gameOver = !cornerFree || !lockLeft;
 	}
 }
