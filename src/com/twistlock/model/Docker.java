@@ -48,4 +48,14 @@ public class Docker
 		if (this.nbLock < 0)
 			this.nbLock = 0;
 	}
+
+	public void addPoint(int n)
+	{
+		this.score += n;
+	}
+
+	public void removePoint(int n)
+	{
+		this.score -= n;
+	}
 }

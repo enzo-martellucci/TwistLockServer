@@ -98,6 +98,11 @@ public class ViewCUI
 		System.out.println(sbGame.toString());
 	}
 
+	public void showWinner(Docker winner)
+	{
+		System.out.printf("%s%s%s win with %d points", MAP_FG.get(winner.getColor()), winner.getName(), RESET, winner.getScore());
+	}
+
 	public String[] play()
 	{
 		Docker current = this.game.getLstDocker()[this.game.getDocker()];

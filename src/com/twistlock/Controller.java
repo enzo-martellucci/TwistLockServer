@@ -30,6 +30,8 @@ public class Controller
 			this.game.play(line, col, corner);
 			this.viewCUI.showGame();
 		}
+
+		this.viewCUI.showWinner(this.game.getWinner());
 	}
 
 

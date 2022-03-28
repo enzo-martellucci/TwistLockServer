@@ -58,6 +58,15 @@ public class Game
 	public char[][] getGridCorner() { return this.gridCorner; }
 
 	public boolean isGameOver()     { return this.gameOver; }
+	public Docker getWinner()
+	{
+		int max = 0;
+		for (int i = 1; i < this.lstDocker.length; i++)
+			if (this.lstDocker[i].getScore() > this.lstDocker[max].getScore())
+				max = i;
+		
+		return this.lstDocker[max];
+	}
 
 
 	// Methods
@@ -93,6 +102,7 @@ public class Game
 			for (int c = cMin; c < cMax; c++)
 			{
 				maxValue = 0;
+
 				for (int i = 0; i < this.lstDocker.length; i++)
 				{
 					cpt = 0;
@@ -109,9 +119,30 @@ public class Game
 						color    = this.lstDocker[i].getColor();
 					}
 				}
-				this.gridColor[l][c] = color;
+
+				this.changeOwner(l, c, color);
 			}
 		}
+	}
+
+	private void changeOwner(int l, int c, char color)
+	{
+		Docker previousOwner = null, nextOwner = null;
+
+		for (int i = 0; i < this.lstDocker.length; i++)
+		{
+			if (this.lstDocker[i].getColor() == this.gridColor[l][c])
+				previousOwner = this.lstDocker[i];
+			if (this.lstDocker[i].getColor() == color)
+				nextOwner = this.lstDocker[i];
+		}
+
+		if (previousOwner != null)
+			previousOwner.removePoint(this.gridValue[l][c]);
+		if (nextOwner != null)
+			nextOwner.addPoint(this.gridValue[l][c]);
+
+		this.gridColor[l][c] = color;
 	}
 
 	public void nextDocker()
