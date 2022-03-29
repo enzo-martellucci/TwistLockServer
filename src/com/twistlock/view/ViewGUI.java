@@ -11,17 +11,19 @@ import java.awt.event.ComponentEvent;
 public class ViewGUI extends JFrame
 {
 	// Attributes
-	private PanelDocker panelDockerL;
-	private PanelDocker panelDockerR;
-	private PanelGrid   panelGrid;
+	private PanelStackedDocker panelDockerL;
+	private PanelStackedDocker panelDockerR;
+	private PanelGrid          panelGrid;
 
 
 	// Constructor
 	public ViewGUI(Controller ctrl, Game game)
 	{
 		// Create and add Panel
-		this.panelDockerL = new PanelDocker(game, PanelDocker.EVEN);
-		this.panelDockerR = new PanelDocker(game, PanelDocker.ODD);
+		int nbDocker = game.getLstDocker().length;
+		this.panelDockerL = new PanelStackedDocker(game, nbDocker / 2);
+		nbDocker -= nbDocker / 2;
+		this.panelDockerR = new PanelStackedDocker(game, nbDocker);
 		this.panelGrid    = new PanelGrid(ctrl, game);
 
 		this.add(this.panelDockerL, BorderLayout.WEST);
@@ -56,8 +58,8 @@ public class ViewGUI extends JFrame
 	// Methods
 	public void maj()
 	{
-		// this.panelDockerL.maj();
-		// this.panelDockerR.maj();
-		// this.panelGrid.maj();
+		this.panelDockerL.maj();
+		this.panelDockerR.maj();
+		this.panelGrid.repaint();
 	}
 }

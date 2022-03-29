@@ -1,15 +1,12 @@
 package com.twistlock.model;
 
+import com.twistlock.Parameter;
+
 import java.util.Arrays;
 import java.util.Random;
 
 public class Game
 {
-	// Constants
-	public static final char   NEUTRAL   = '.';
-	public static final char[] LST_COLOR = new char[]{ 'R', 'G', 'B', 'Y' };
-
-
 	// Attributes
 	private Docker[] lstDocker;
 	private int      docker;
@@ -27,7 +24,7 @@ public class Game
 		// Dockers initialisation
 		this.lstDocker = new Docker[lstName.length];
 		for (int i = 0; i < this.lstDocker.length; i++)
-		     this.lstDocker[i] = new Docker(lstName[i], LST_COLOR[i]);
+		     this.lstDocker[i] = new Docker(lstName[i], Parameter.LST_COLOR[i]);
 
 		// Grids initialisation
 		Random random = new Random();
@@ -40,10 +37,10 @@ public class Game
 			     this.gridValue[l][c] = 5 + random.nextInt(49);
 
 		for (int l = 0; l < this.gridColor.length; l++)
-		     Arrays.fill(this.gridColor[l], NEUTRAL);
+		     Arrays.fill(this.gridColor[l], Parameter.NEUTRAL);
 
 		for (int l = 0; l < this.gridCorner.length; l++)
-		     Arrays.fill(this.gridCorner[l], NEUTRAL);
+		     Arrays.fill(this.gridCorner[l], Parameter.NEUTRAL);
 
 		this.gameOver = false;
 	}
@@ -64,18 +61,15 @@ public class Game
 		for (int i = 1; i < this.lstDocker.length; i++)
 			if (this.lstDocker[i].getScore() > this.lstDocker[max].getScore())
 				max = i;
-		
+
 		return this.lstDocker[max];
 	}
 
 
 	// Methods
-	public void play(int l, int c, int corner)
+	public void play(int lCorn, int cCorn)
 	{
-		int lCorn = l + (corner == 4 || corner == 3 ? 1 : 0);
-		int cCorn = c + (corner == 2 || corner == 3 ? 1 : 0);
-
-		if (l < 0 || l > this.gridValue.length - 1 || c < 0 || c > this.gridValue[0].length - 1 || corner < 1 || corner > 4 || this.gridCorner[lCorn][cCorn] != NEUTRAL)
+		if (this.gridCorner[lCorn][cCorn] != Parameter.NEUTRAL)
 			this.lstDocker[this.docker].removeLock(2);
 		else
 		{
@@ -84,12 +78,13 @@ public class Game
 		}
 
 		this.nextDocker();
+		System.out.println(this.docker);
 	}
 
 	private void placeCorner(int lCorn, int cCorn)
 	{
 		int  cpt, maxValue;
-		char color = NEUTRAL;
+		char color = Parameter.NEUTRAL;
 
 		this.gridCorner[lCorn][cCorn] = this.lstDocker[this.docker].getColor();
 
@@ -112,7 +107,7 @@ public class Game
 					if (this.gridCorner[l + 1][c + 1] == this.lstDocker[i].getColor()) cpt++;
 
 					if (cpt == maxValue)
-						color = NEUTRAL;
+						color = Parameter.NEUTRAL;
 					else if (cpt > maxValue)
 					{
 						maxValue = cpt;
@@ -174,7 +169,7 @@ public class Game
 		exit:
 		for (int l = 0; l < this.gridCorner.length; l++)
 			for (int c = 0; c < this.gridCorner.length; c++)
-				if (this.gridCorner[l][c] == NEUTRAL)
+				if (this.gridCorner[l][c] == Parameter.NEUTRAL)
 				{
 					cornerFree = true;
 					break exit;

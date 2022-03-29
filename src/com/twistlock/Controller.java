@@ -20,15 +20,16 @@ public class Controller
 
 
 	// Methods
-	public void play(int l, int c, int corner)
+	public void play(int l, int c)
 	{
-		// TODO
+		this.game.play(l, c);
+		this.viewGUI.maj();
 	}
 
 
 	// Main
 	public static void main(String[] args)
 	{
-		new Controller(new String[]{ "J1", "J2" }, 10, 7);
+		new Controller(new String[]{ "J1", "J2", "J3", "J4" }, 10, 7);
 	}
 }
