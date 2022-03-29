@@ -34,8 +34,8 @@ public class ViewGUI extends JFrame
 		panelL.setBackground(DOCKER_COL_BG);
 		panelR.setBackground(DOCKER_COL_BG);
 
-		panelL.add(this.lstPanelDocker[0], this.lstPanelDocker.length > 2 ? BorderLayout.NORTH : BorderLayout.CENTER);
-		panelR.add(this.lstPanelDocker[1], this.lstPanelDocker.length > 3 ? BorderLayout.NORTH : BorderLayout.CENTER);
+		panelL.add(this.lstPanelDocker[0], BorderLayout.NORTH);
+		panelR.add(this.lstPanelDocker[1], BorderLayout.NORTH);
 		if (this.lstPanelDocker.length > 2)
 			panelL.add(this.lstPanelDocker[2], BorderLayout.SOUTH);
 		if (this.lstPanelDocker.length > 3)
