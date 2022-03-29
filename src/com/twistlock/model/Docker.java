@@ -4,7 +4,7 @@ public class Docker
 {
 	// Constants
 	private static final int START_SCORE = 0;
-	private static final int START_LOCK  = 4;
+	private static final int START_LOCK  = 20;
 
 
 	//Attributs

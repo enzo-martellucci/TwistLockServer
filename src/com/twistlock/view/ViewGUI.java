@@ -1,6 +1,7 @@
 package com.twistlock.view;
 
 import com.twistlock.Controller;
+import com.twistlock.model.Docker;
 import com.twistlock.model.Game;
 
 import javax.swing.*;
@@ -8,26 +9,40 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import static com.twistlock.Parameter.DOCKER_COL_BG;
+
 public class ViewGUI extends JFrame
 {
 	// Attributes
-	private PanelStackedDocker panelDockerL;
-	private PanelStackedDocker panelDockerR;
-	private PanelGrid          panelGrid;
+	private PanelDocker[] lstPanelDocker;
+	private PanelGrid     panelGrid;
 
 
 	// Constructor
 	public ViewGUI(Controller ctrl, Game game)
 	{
-		// Create and add Panel
-		int nbDocker = game.getLstDocker().length;
-		this.panelDockerL = new PanelStackedDocker(game, nbDocker / 2);
-		nbDocker -= nbDocker / 2;
-		this.panelDockerR = new PanelStackedDocker(game, nbDocker);
-		this.panelGrid    = new PanelGrid(ctrl, game);
+		// Create Panel
+		Docker[] lstDocker = game.getLstDocker();
+		this.lstPanelDocker = new PanelDocker[lstDocker.length];
+		for (int i = 0; i < this.lstPanelDocker.length; i++)
+		     this.lstPanelDocker[i] = new PanelDocker(game, lstDocker[i]);
+		this.panelGrid = new PanelGrid(ctrl, game);
 
-		this.add(this.panelDockerL, BorderLayout.WEST);
-		this.add(this.panelDockerR, BorderLayout.EAST);
+		// Place panel
+		JPanel panelL = new JPanel(new BorderLayout());
+		JPanel panelR = new JPanel(new BorderLayout());
+		panelL.setBackground(DOCKER_COL_BG);
+		panelR.setBackground(DOCKER_COL_BG);
+
+		panelL.add(this.lstPanelDocker[0], this.lstPanelDocker.length > 2 ? BorderLayout.NORTH : BorderLayout.CENTER);
+		panelR.add(this.lstPanelDocker[1], this.lstPanelDocker.length > 3 ? BorderLayout.NORTH : BorderLayout.CENTER);
+		if (this.lstPanelDocker.length > 2)
+			panelL.add(this.lstPanelDocker[2], BorderLayout.SOUTH);
+		if (this.lstPanelDocker.length > 3)
+			panelR.add(this.lstPanelDocker[3], BorderLayout.SOUTH);
+
+		this.add(panelL, BorderLayout.WEST);
+		this.add(panelR, BorderLayout.EAST);
 		this.add(this.panelGrid, BorderLayout.CENTER);
 
 
@@ -38,10 +53,12 @@ public class ViewGUI extends JFrame
 			public void componentResized(ComponentEvent e)
 			{
 				super.componentResized(e);
-				ViewGUI.this.panelDockerL.setPreferredSize(new Dimension((int) (0.15 * ViewGUI.this.getWidth()), ViewGUI.this.getHeight()));
-				ViewGUI.this.panelDockerR.setPreferredSize(new Dimension((int) (0.15 * ViewGUI.this.getWidth()), ViewGUI.this.getHeight()));
-				ViewGUI.this.panelDockerL.repaint();
-				ViewGUI.this.panelDockerR.repaint();
+				Dimension panelDockerSize = new Dimension((int) (0.15 * ViewGUI.this.getWidth()), (int) (0.25 * ViewGUI.this.getHeight()));
+				for (int i = 0; i < ViewGUI.this.lstPanelDocker.length; i++)
+				{
+					ViewGUI.this.lstPanelDocker[i].setPreferredSize(panelDockerSize);
+					ViewGUI.this.lstPanelDocker[i].maj();
+				}
 			}
 		});
 
@@ -58,8 +75,14 @@ public class ViewGUI extends JFrame
 	// Methods
 	public void maj()
 	{
-		this.panelDockerL.maj();
-		this.panelDockerR.maj();
+		for (int i = 0; i < this.lstPanelDocker.length; i++)
+		     this.lstPanelDocker[i].maj();
 		this.panelGrid.repaint();
+	}
+
+	public void end(Docker winner)
+	{
+		this.panelGrid.end();
+		this.setTitle("Player " + winner.getName() + " win with " + winner.getScore() + " point(s)");
 	}
 }

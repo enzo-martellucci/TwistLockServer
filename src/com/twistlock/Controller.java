@@ -24,12 +24,26 @@ public class Controller
 	{
 		this.game.play(l, c);
 		this.viewGUI.maj();
+
+		if (this.game.isGameOver())
+			this.viewGUI.end(this.game.getWinner());
 	}
 
 
 	// Main
 	public static void main(String[] args)
 	{
-		new Controller(new String[]{ "J1", "J2", "J3", "J4" }, 10, 7);
+		args = new String[]{ "Tim", "Thomas", "Tony", "Tamara" };
+
+		if (args.length < 2 || args.length > 4)
+		{
+			System.out.println("Number of dockers should be between 2 and 4.");
+			return;
+		}
+
+		int line = 4 + (int) (Math.random() * 6);
+		int col  = 4 + (int) (Math.random() * 6);
+
+		new Controller(args, line, col);
 	}
 }
