@@ -33,6 +33,8 @@ public class Controller
 	// Main
 	public static void main(String[] args)
 	{
+		args = new String[]{ "Antoine", "Enzo" };
+
 		if (args.length < 2 || args.length > 4)
 		{
 			System.out.println("Number of dockers should be between 2 and 4.");

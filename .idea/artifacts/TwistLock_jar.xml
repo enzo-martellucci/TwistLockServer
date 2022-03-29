@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TwistLock:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TwistLock_jar</output-path>
+    <root id="archive" name="TwistLock.jar">
+      <element id="module-output" name="TwistLock" />
+    </root>
+  </artifact>
+</component>

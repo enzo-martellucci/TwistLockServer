@@ -57,7 +57,7 @@ public class ViewGUI extends JFrame
 				for (int i = 0; i < ViewGUI.this.lstPanelDocker.length; i++)
 				{
 					ViewGUI.this.lstPanelDocker[i].setPreferredSize(panelDockerSize);
-					ViewGUI.this.lstPanelDocker[i].maj();
+					ViewGUI.this.lstPanelDocker[i].revalidate();
 				}
 			}
 		});
@@ -83,6 +83,6 @@ public class ViewGUI extends JFrame
 	public void end(Docker winner)
 	{
 		this.panelGrid.end();
-		this.setTitle("Player " + winner.getName() + " win with " + winner.getScore() + " point(s)");
+		this.setTitle(winner.getName() + " win with " + winner.getScore() + " point(s)");
 	}
 }
