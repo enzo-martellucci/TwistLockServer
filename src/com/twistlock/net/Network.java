@@ -23,7 +23,7 @@ public class Network
 
 	private int           connected;
 	private InetAddress[] lstIp;
-	private int[]         lstLastPort;
+	private int[]         lstPort;
 
 
 	// Constructor
@@ -39,8 +39,8 @@ public class Network
 		catch (SocketException e) { e.printStackTrace(); }
 
 		this.connected   = 0;
-		this.lstIp       = new InetAddress[this.game.getLstDocker().length];
-		this.lstLastPort = new int[this.lstIp.length];
+		this.lstIp   = new InetAddress[this.game.getLstDocker().length];
+		this.lstPort = new int[this.lstIp.length];
 
 		System.out.println("Numéro du port : " + port);
 
@@ -71,8 +71,8 @@ public class Network
 				this.connected++;
 
 				// Store Ip and Port
-				this.lstIp[i]       = packet.getAddress();
-				this.lstLastPort[i] = packet.getPort();
+				this.lstIp[i]   = packet.getAddress();
+				this.lstPort[i] = packet.getPort();
 
 				// Send welcome message
 				welcome = String.format(WELCOME, i, name, i, LST_FULL_COLOR[i]);
@@ -190,7 +190,7 @@ public class Network
 	{
 		try
 		{
-			DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(), this.lstIp[i], this.lstLastPort[i]);
+			DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(), this.lstIp[i], this.lstPort[i]);
 			this.socket.send(packet);
 		}
 		catch (Exception e)
@@ -221,7 +221,7 @@ public class Network
 			}
 			while (wrongPlayer);
 
-			this.lstLastPort[i] = packet.getPort();
+			this.lstPort[i] = packet.getPort();
 		}
 		catch (IOException e)
 		{
