@@ -45,7 +45,6 @@ public class Controller
 	// Main
 	public static void main(String[] args)
 	{
-		args = new String[]{ "8000", "2" };
 		if (args.length != 2)
 		{
 			System.out.println("Usage : Controller port nbDocker");
