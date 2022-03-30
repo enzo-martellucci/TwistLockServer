@@ -82,7 +82,6 @@ public class ViewGUI extends JFrame
 
 	public void end(Docker winner)
 	{
-		this.panelGrid.end();
 		this.setTitle(winner.getName() + " win with " + winner.getScore() + " point(s)");
 	}
 }

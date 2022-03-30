@@ -10,9 +10,10 @@ public final class Parameter
 	public static final int START_SCORE = 0;
 	public static final int START_LOCK  = 20;
 
-	public static final char                  NEUTRAL   = '.';
-	public static final char[]                LST_COLOR = new char[]{ 'R', 'G', 'B', 'Y' };
-	public static final Map<Character, Color> OWNER     = new HashMap<>();
+	public static final char                  NEUTRAL        = '.';
+	public static final char[]                LST_COLOR      = new char[]{ 'R', 'G', 'B', 'Y' };
+	public static final String[]              LST_FULL_COLOR = new String[]{ "ROUGE", "VERT", "BLEU", "JAUNE" };
+	public static final Map<Character, Color> OWNER          = new HashMap<>();
 
 	public static final int   PADDING_GRID = 20;
 	public static final int   SPACING_GRID = 6;

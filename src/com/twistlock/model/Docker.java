@@ -4,8 +4,6 @@ import com.twistlock.Parameter;
 
 public class Docker
 {
-
-
 	//Attributs
 	private String name;
 	private char   color;
@@ -38,6 +36,10 @@ public class Docker
 	{
 		return this.nbLock;
 	}
+
+
+	// Setters
+	public void setName(String name) { this.name = name; }
 
 
 	// Methods

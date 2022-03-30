@@ -20,15 +20,20 @@ public class Game
 
 
 	// Constructor
-	public Game(String[] lstName, int nbLine, int nbCol)
+	public Game(int nbDocker)
 	{
 		// Dockers initialisation
-		this.lstDocker = new Docker[lstName.length];
+		this.lstDocker = new Docker[nbDocker];
 		for (int i = 0; i < this.lstDocker.length; i++)
-		     this.lstDocker[i] = new Docker(lstName[i], LST_COLOR[i]);
+		     this.lstDocker[i] = new Docker("Undefined", LST_COLOR[i]);
+		this.docker = 0;
 
 		// Grids initialisation
 		Random random = new Random();
+
+		int nbLine = 4 + random.nextInt(6);
+		int nbCol  = 4 + random.nextInt(6);
+
 		this.gridValue  = new int[nbLine][nbCol];
 		this.gridColor  = new char[nbLine][nbCol];
 		this.gridCorner = new char[nbLine + 1][nbCol + 1];
@@ -67,18 +72,31 @@ public class Game
 	}
 
 
-	// Methods
-	public void play(int lCorn, int cCorn)
+	// Game methods
+	public int play(int l, int c, int corner)
 	{
-		if (this.gridCorner[lCorn][cCorn] != NEUTRAL)
+		int validity;
+		int lCorn = l + (corner == 4 || corner == 3 ? 1 : 0);
+		int cCorn = c + (corner == 2 || corner == 3 ? 1 : 0);
+
+		if (l < 0 || l > this.gridValue.length - 1 || c < 0 || c > this.gridValue[0].length - 1 || corner < 1 || corner > 4 || this.gridCorner[lCorn][cCorn] != NEUTRAL)
+		{
+			validity = 1;
 			this.lstDocker[this.docker].removeLock(2);
+		}
+		else if (this.lstDocker[this.docker].getNbLock() == 0)
+		{
+			validity = 2;
+		}
 		else
 		{
+			validity = 0;
 			this.lstDocker[this.docker].removeLock(1);
 			this.placeCorner(lCorn, cCorn);
 		}
 
 		this.nextDocker();
+		return validity;
 	}
 
 	private void placeCorner(int lCorn, int cCorn)
@@ -146,11 +164,7 @@ public class Game
 		if (this.gameOver)
 			return;
 
-		do
-		{
-			this.docker = (docker + 1) % this.lstDocker.length;
-		}
-		while (this.lstDocker[this.docker].getNbLock() == 0);
+		this.docker = (docker + 1) % this.lstDocker.length;
 	}
 
 	private void majGameOver()
@@ -176,5 +190,14 @@ public class Game
 				}
 
 		this.gameOver = !cornerFree || !lockLeft;
+	}
+
+
+	// Network methods
+	public void addDocker(String name)
+	{
+		this.lstDocker[this.docker++].setName(name);
+		if (this.docker == this.lstDocker.length)
+			this.docker = 0;
 	}
 }
